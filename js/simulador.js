@@ -81,6 +81,16 @@ function renderTemplate(id) {
         <!-- Left: importe -->
         <div class="sim-col-left">
           <div>
+            <label class="sim-field-label" for="sim-sector-select-${id}">Sector</label>
+            <div class="sim-select-wrap">
+              <select class="sim-select" id="sim-sector-select-${id}" name="sector" data-sector>
+                <option value="Farmacia">Farmacia</option>
+                <option value="Dental">Dental</option>
+                <option value="Fisioterapia">Fisioterapia</option>
+                <option value="Veterinaria">Veterinaria</option>
+              </select>
+            </div>
+
             <label class="sim-field-label">¿Cuánto necesitas?</label>
             <div class="sim-importe-value" data-importe-display>
               ${formatEurInt(CONFIG.DEFAULT_IMPORTE)}
