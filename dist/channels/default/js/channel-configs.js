@@ -1,0 +1,70 @@
+window.SIMULADOR_CONFIGS = {
+  "default": {
+    "schemaVersion": "1.0",
+    "channelId": "default",
+    "version": "1.0.0",
+    "status": "published",
+    "finance": {
+      "tae": 0.0699
+    },
+    "amount": {
+      "min": 0,
+      "max": 150000,
+      "step": 1000,
+      "default": 75000,
+      "milestones": [
+        0,
+        50000,
+        100000,
+        150000
+      ]
+    },
+    "terms": {
+      "options": [
+        12,
+        24,
+        36,
+        48,
+        60
+      ],
+      "default": 36
+    },
+    "sector": {
+      "enabled": true,
+      "label": "Sector",
+      "default": "Farmacia",
+      "options": [
+        "Farmacia",
+        "Dental",
+        "Fisioterapia",
+        "Veterinaria"
+      ]
+    },
+    "products": {
+      "enabled": true,
+      "label": "Producto",
+      "default": "Equipamiento esencial",
+      "options": [
+        "Equipamiento esencial",
+        "Equipamiento premium",
+        "Mobiliario"
+      ]
+    },
+    "offers": {
+      "enabled": false,
+      "maxStackedDiscount": 0.02,
+      "rules": []
+    },
+    "insurance": {
+      "enabled": false,
+      "mode": "one_time_fixed",
+      "amount": 0,
+      "included": false,
+      "label": "Seguro a todo riesgo"
+    },
+    "ui": {
+      "title": "Simulador de Cuotas de Renting",
+      "ctaLabel": "Me interesa ->"
+    }
+  }
+};

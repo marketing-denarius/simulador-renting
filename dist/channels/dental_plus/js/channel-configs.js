@@ -1,0 +1,84 @@
+window.SIMULADOR_CONFIGS = {
+  "dental_plus": {
+    "schemaVersion": "1.0",
+    "channelId": "dental_plus",
+    "version": "1.0.0",
+    "status": "published",
+    "finance": {
+      "tae": 0.065
+    },
+    "amount": {
+      "min": 5000,
+      "max": 120000,
+      "step": 1000,
+      "default": 50000,
+      "milestones": [
+        5000,
+        30000,
+        60000,
+        90000,
+        120000
+      ]
+    },
+    "terms": {
+      "options": [
+        24,
+        36,
+        48,
+        60
+      ],
+      "default": 48
+    },
+    "sector": {
+      "enabled": false,
+      "label": "Sector",
+      "default": "Dental",
+      "options": [
+        "Farmacia",
+        "Dental",
+        "Fisioterapia",
+        "Veterinaria"
+      ]
+    },
+    "products": {
+      "enabled": true,
+      "label": "Producto",
+      "default": "Equipamiento premium",
+      "options": [
+        "Equipamiento esencial",
+        "Equipamiento premium"
+      ]
+    },
+    "offers": {
+      "enabled": true,
+      "maxStackedDiscount": 0.02,
+      "rules": [
+        {
+          "id": "dental-volume",
+          "label": "Descuento por volumen",
+          "priority": 100,
+          "stackable": true,
+          "conditions": {
+            "minAmount": 70000,
+            "minTerm": 36
+          },
+          "discount": {
+            "type": "tae_delta",
+            "value": 0.006
+          }
+        }
+      ]
+    },
+    "insurance": {
+      "enabled": true,
+      "mode": "one_time_fixed",
+      "amount": 0,
+      "included": true,
+      "label": "Seguro a todo riesgo"
+    },
+    "ui": {
+      "title": "Simulador Renting Dental+",
+      "ctaLabel": "Solicitar propuesta ->"
+    }
+  }
+};

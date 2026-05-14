@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Simulador Renting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="cms.css" />
+</head>
+<body>
+  <main class="cms-shell">
+    <header class="cms-header">
+      <div>
+        <p class="cms-eyebrow">Panel de configuracion</p>
+        <h1>CMS Simulador Renting</h1>
+        <p class="cms-subtitle">Configura canales y exporta JSON para publicacion build-time.</p>
+      </div>
+      <a class="cms-link" href="../index.html">Volver a la demo</a>
+    </header>
+
+    <section class="cms-grid">
+      <article class="cms-card">
+        <h2>Canal</h2>
+        <label class="cms-label">Listado de canales</label>
+        <div id="channel-list" class="cms-channel-list"></div>
+
+        <label class="cms-label" for="new-channel-id">Crear canal (id)</label>
+        <div class="cms-inline-actions">
+          <input id="new-channel-id" class="cms-input" type="text" placeholder="ejemplo: odontologos_madrid" />
+          <button id="btn-create-channel" class="cms-btn">Crear canal</button>
+        </div>
+
+        <label class="cms-label" for="channel-select">Selecciona canal</label>
+        <select id="channel-select" class="cms-input"></select>
+
+        <div class="cms-row">
+          <div>
+            <label class="cms-label" for="channel-version">Version</label>
+            <input id="channel-version" class="cms-input" type="text" />
+          </div>
+          <div>
+            <label class="cms-label" for="channel-status">Estado</label>
+            <select id="channel-status" class="cms-input">
+              <option value="draft">draft</option>
+              <option value="published">published</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="cms-label" for="ui-title">Titulo UI</label>
+        <input id="ui-title" class="cms-input" type="text" />
+
+        <label class="cms-label" for="ui-cta">Texto CTA</label>
+        <input id="ui-cta" class="cms-input" type="text" />
+      </article>
+
+      <article class="cms-card">
+        <h2>Parametros base</h2>
+        <div class="cms-row">
+          <div>
+            <label class="cms-label" for="amount-min">Importe minimo</label>
+            <input id="amount-min" class="cms-input" type="number" />
+          </div>
+          <div>
+            <label class="cms-label" for="amount-max">Importe maximo</label>
+            <input id="amount-max" class="cms-input" type="number" />
+          </div>
+        </div>
+        <div class="cms-row">
+          <div>
+            <label class="cms-label" for="amount-step">Step</label>
+            <input id="amount-step" class="cms-input" type="number" />
+          </div>
+          <div>
+            <label class="cms-label" for="amount-default">Importe default</label>
+            <input id="amount-default" class="cms-input" type="number" />
+          </div>
+        </div>
+
+        <label class="cms-label">Plazos</label>
+        <div id="terms-inline" class="cms-terms-inline"></div>
+
+        <label class="cms-label" for="finance-tae">TAE (decimal)</label>
+        <input id="finance-tae" class="cms-input" type="number" step="0.0001" />
+      </article>
+
+      <article class="cms-card">
+        <h2>Sector y productos</h2>
+        <label class="cms-toggle">
+          <input id="sector-enabled" type="checkbox" />
+          <span>Mostrar sector</span>
+        </label>
+
+        <label class="cms-label" for="sector-default">Sector default</label>
+        <select id="sector-default" class="cms-input">
+          <option value="Farmacia">Farmacia</option>
+          <option value="Dental">Dental</option>
+          <option value="Fisioterapia">Fisioterapia</option>
+          <option value="Veterinaria">Veterinaria</option>
+        </select>
+
+        <label class="cms-toggle">
+          <input id="products-enabled" type="checkbox" />
+          <span>Mostrar producto</span>
+        </label>
+
+        <label class="cms-label" for="products-label">Etiqueta producto</label>
+        <input id="products-label" class="cms-input" type="text" />
+
+        <label class="cms-label" for="products-options">Opciones producto (coma separada)</label>
+        <input id="products-options" class="cms-input" type="text" />
+
+        <label class="cms-label" for="products-default">Producto default</label>
+        <input id="products-default" class="cms-input" type="text" />
+      </article>
+
+      <article class="cms-card">
+        <h2>Seguro a todo riesgo</h2>
+        <label class="cms-toggle">
+          <input id="insurance-enabled" type="checkbox" />
+          <span>Seguro activo</span>
+        </label>
+
+        <label class="cms-toggle">
+          <input id="insurance-included" type="checkbox" />
+          <span>Seguro incluido</span>
+        </label>
+
+        <label class="cms-label" for="insurance-amount">Importe pago unico</label>
+        <input id="insurance-amount" class="cms-input" type="number" />
+
+        <p class="cms-note">Si Seguro incluido esta activo, el simulador mostrara incluido y no aplicara importe.</p>
+      </article>
+    </section>
+
+    <section class="cms-card cms-card--full">
+      <h2>Reglas de ofertas</h2>
+      <label class="cms-toggle">
+        <input id="offers-enabled" type="checkbox" />
+        <span>Activar ofertas comerciales</span>
+      </label>
+      <label class="cms-label" for="offers-rules">Rules JSON</label>
+      <textarea id="offers-rules" class="cms-textarea" rows="10"></textarea>
+      <p class="cms-note">Formato: array JSON de reglas. Las reglas por producto son ignoradas por el motor de precio.</p>
+    </section>
+
+    <section class="cms-card cms-card--full">
+      <h2>Salida y acciones</h2>
+      <div class="cms-actions">
+        <button id="btn-save-browser" class="cms-btn">Guardar canal seleccionado</button>
+        <button id="btn-copy-json" class="cms-btn cms-btn--ghost">Copiar JSON canal</button>
+        <button id="btn-download-json" class="cms-btn cms-btn--ghost">Descargar JSON canal</button>
+        <button id="btn-export-channels" class="cms-btn cms-btn--ghost">Exportar pagina del canal</button>
+        <button id="btn-reset" class="cms-btn cms-btn--danger">Descartar cambios del navegador</button>
+      </div>
+      <p class="cms-note" id="cms-message">Los cambios se guardan en tu navegador. Usa el boton Guardar para confirmar.</p>
+      <ol class="cms-steps">
+        <li>Exporta la pagina del canal seleccionado desde este panel.</li>
+        <li>Si vas a publicar por repositorio, actualiza configs/channels/.</li>
+        <li>Ejecuta: node scripts/build-channels.mjs</li>
+      </ol>
+      <label class="cms-label" for="json-preview">Preview JSON</label>
+      <textarea id="json-preview" class="cms-textarea" rows="16" readonly></textarea>
+    </section>
+  </main>
+
+  <script src="../js/channel-configs.js"></script>
+  <script src="cms.js"></script>
+</body>
+</html>
