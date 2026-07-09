@@ -11,7 +11,7 @@ window.SIMULADOR_CONFIGS = {
       "min": 5000,
       "max": 120000,
       "step": 1000,
-      "default": 50000,
+      "default": 30000,
       "milestones": [
         5000,
         30000,
@@ -77,7 +77,7 @@ window.SIMULADOR_CONFIGS = {
       "label": "Seguro a todo riesgo"
     },
     "ui": {
-      "title": "Simulador Renting Dental+",
+      "title": "Calcula tu cuota Dental+",
       "ctaLabel": "Solicitar propuesta ->"
     }
   }

@@ -11,7 +11,7 @@ window.SIMULADOR_CONFIGS = {
       "min": 0,
       "max": 150000,
       "step": 1000,
-      "default": 75000,
+      "default": 10000,
       "milestones": [
         0,
         50000,
@@ -63,7 +63,7 @@ window.SIMULADOR_CONFIGS = {
       "label": "Seguro a todo riesgo"
     },
     "ui": {
-      "title": "Simulador de Cuotas de Renting",
+      "title": "Calcula tu cuota",
       "ctaLabel": "Me interesa ->"
     }
   }

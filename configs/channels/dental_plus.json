@@ -10,7 +10,7 @@
     "min": 5000,
     "max": 120000,
     "step": 1000,
-    "default": 50000,
+    "default": 30000,
     "milestones": [5000, 30000, 60000, 90000, 120000]
   },
   "terms": {
@@ -57,7 +57,7 @@
     "label": "Seguro a todo riesgo"
   },
   "ui": {
-    "title": "Simulador Renting Dental+",
+    "title": "Calcula tu cuota Dental+",
     "ctaLabel": "Solicitar propuesta ->"
   }
 }

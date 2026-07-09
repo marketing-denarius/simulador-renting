@@ -111,10 +111,14 @@
   display: block;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sim-text-secondary);
   margin-bottom: var(--spacing-12);
+}
+
+.sim-plazo-block {
+  margin-top: var(--spacing-24);
 }
 
 .sim-select-wrap {
@@ -278,10 +282,10 @@
   height: var(--sim-slider-thumb-size);
   margin-top: calc((var(--sim-slider-track-h) - var(--sim-slider-thumb-size)) / 2);
   border-radius: 50%;
-  background: var(--dds-color-gold-100);
+  background: var(--sim-slider-fill);
   cursor: pointer;
-  border: 5px solid var(--dds-color-gold-500);
-  box-shadow: 0 4px 12px rgba(159, 138, 95, 0.28);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 4px 12px rgba(14, 119, 135, 0.34);
   transition: transform 0.15s ease;
 }
 
@@ -293,10 +297,10 @@
   width: var(--sim-slider-thumb-size);
   height: var(--sim-slider-thumb-size);
   border-radius: 50%;
-  background: var(--dds-color-gold-100);
+  background: var(--sim-slider-fill);
   cursor: pointer;
-  border: 5px solid var(--dds-color-gold-500);
-  box-shadow: 0 4px 12px rgba(159, 138, 95, 0.28);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 4px 12px rgba(14, 119, 135, 0.34);
 }
 
 .sim-slider-milestones {
@@ -323,7 +327,7 @@
   width: 2px;
   height: 8px;
   border-radius: 2px;
-  background: var(--dds-color-gold-500);
+  background: var(--sim-slider-fill);
   opacity: 0.7;
 }
 
@@ -332,7 +336,7 @@
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--dds-color-gold-600);
+  color: var(--sim-accent);
 }
 
 /* --- Right column --- */
@@ -385,6 +389,12 @@
   border: 1px solid var(--sim-border);
   border-radius: var(--sim-radius);
   padding: var(--spacing-20);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sim-result.is-updating {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .sim-result__cuota {
@@ -398,6 +408,25 @@
 
 .sim-result__meta {
   font-size: 13px;
+  color: var(--sim-text-secondary);
+}
+
+.sim-result__meta--term {
+  font-weight: 600;
+  color: var(--sim-text-primary);
+  margin-bottom: 4px;
+}
+
+.sim-result__tae {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sim-accent);
+  margin-bottom: 6px;
+}
+
+.sim-legal-text {
+  font-size: 12px;
+  line-height: 1.45;
   color: var(--sim-text-secondary);
 }
 
@@ -424,6 +453,13 @@
 
 .sim-cta-btn:active {
   transform: translateY(1px);
+}
+
+.sim-cta-btn:disabled {
+  background: var(--dds-color-silver-300);
+  color: #FFFFFF;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* =========================================================

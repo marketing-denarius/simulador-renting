@@ -15,7 +15,7 @@ const DEFAULT_CHANNEL_CONFIG = {
     min: 0,
     max: 150000,
     step: 1000,
-    default: 75000,
+    default: 10000,
     milestones: [0, 50000, 100000, 150000],
   },
   terms: {
@@ -47,7 +47,7 @@ const DEFAULT_CHANNEL_CONFIG = {
     label: 'Seguro a todo riesgo',
   },
   ui: {
-    title: 'Simulador de Cuotas de Renting',
+    title: 'Calcula tu cuota',
     ctaLabel: 'Me interesa ->',
   },
 };
@@ -66,7 +66,7 @@ const CHANNEL_CONFIGS = {
       min: 5000,
       max: 120000,
       step: 1000,
-      default: 50000,
+      default: 30000,
       milestones: [5000, 30000, 60000, 90000, 120000],
     },
     terms: {
@@ -113,7 +113,7 @@ const CHANNEL_CONFIGS = {
       label: 'Seguro a todo riesgo',
     },
     ui: {
-      title: 'Simulador Renting Dental+',
+      title: 'Calcula tu cuota Dental+',
       ctaLabel: 'Solicitar propuesta ->',
     },
   },
@@ -169,11 +169,7 @@ function normalizeChannelConfig(rawConfig) {
   merged.amount.min = Math.min(safeMin, safeMax);
   merged.amount.max = Math.max(safeMin, safeMax);
   merged.amount.step = Math.max(1, safeStep);
-  merged.amount.default = clamp(
-    Number(merged.amount.default),
-    merged.amount.min,
-    merged.amount.max,
-  );
+  merged.amount.default = resolveDefaultAmount(merged.amount);
 
   merged.amount.milestones = (merged.amount.milestones || [])
     .map((value) => Number(value))
@@ -257,17 +253,33 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
+function resolveDefaultAmount(amountConfig) {
+  const min = amountConfig.min;
+  const max = amountConfig.max;
+  const step = amountConfig.step;
+  const clampedDefault = clamp(Number(amountConfig.default), min, max);
+
+  if (clampedDefault > 0) return clampedDefault;
+  if (max <= 0) return clampedDefault;
+
+  const baseline = min > 0 ? min : 10000;
+  const snapped = Math.round(baseline / step) * step;
+  return clamp(snapped, min, max);
+}
+
 function formatEur(value) {
   return new Intl.NumberFormat('es-ES', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(value) + ' EUR';
+    useGrouping: 'always',
+  }).format(value) + ' €';
 }
 
 function formatEurInt(value) {
   return new Intl.NumberFormat('es-ES', {
     maximumFractionDigits: 0,
-  }).format(value) + ' EUR';
+    useGrouping: 'always',
+  }).format(value) + ' €';
 }
 
 function formatK(value) {
@@ -519,7 +531,8 @@ function renderTemplate(config, id, uiState = {}) {
             <label class="sim-field-label">Tu cuota estimada</label>
             <div class="sim-result">
               <div class="sim-result__cuota" data-cuota-display></div>
-              <div class="sim-result__meta" data-meta-display></div>
+              <div class="sim-result__meta sim-result__meta--term" data-term-display></div>
+              <div class="sim-result__tae" data-meta-display></div>
               <div class="sim-result__meta" data-breakdown-display></div>
               <div class="sim-result__meta" data-insurance-display></div>
             </div>
@@ -548,6 +561,7 @@ class RentingSimulador {
     this.meses = this.config.terms.default;
     this.selectedSector = this.config.sector.default || this.config.sector.options[0] || '';
     this.selectedProduct = this.config.products.default || this.config.products.options[0] || '';
+    this.hasInteracted = false;
     if (this.config.products.enabled && this.config.products.options.length > 0) {
       if (!this.config.products.options.includes(this.selectedProduct)) {
         this.selectedProduct = this.config.products.options[0];
@@ -572,7 +586,9 @@ class RentingSimulador {
     this.elImporte = this.root.querySelector('[data-importe-display]');
     this.elSlider = this.root.querySelector('[data-slider]');
     this.elSliderWrap = this.root.querySelector('.sim-slider-wrap');
+    this.elResult = this.root.querySelector('.sim-result');
     this.elCuota = this.root.querySelector('[data-cuota-display]');
+    this.elTerm = this.root.querySelector('[data-term-display]');
     this.elMeta = this.root.querySelector('[data-meta-display]');
     this.elBreakdown = this.root.querySelector('[data-breakdown-display]');
     this.elInsurance = this.root.querySelector('[data-insurance-display]');
@@ -590,6 +606,7 @@ class RentingSimulador {
   bindEvents() {
     this.elSlider.addEventListener('input', (event) => {
       this.importe = parseInt(event.target.value, 10);
+      this.hasInteracted = true;
       this.actualizarUI();
     });
 
@@ -602,12 +619,14 @@ class RentingSimulador {
         item.classList.toggle('is-active', item === button);
       });
 
+      this.hasInteracted = true;
       this.actualizarUI();
     });
 
     if (this.elSector) {
       this.elSector.addEventListener('change', (event) => {
         this.selectedSector = event.target.value;
+        this.hasInteracted = true;
         this.actualizarUI();
       });
     }
@@ -623,6 +642,7 @@ class RentingSimulador {
           item.classList.toggle('is-active', isActive);
           item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
+        this.hasInteracted = true;
         this.actualizarUI();
       });
     }
@@ -649,7 +669,8 @@ class RentingSimulador {
     const taeBaseText = (details.taeBase * 100).toFixed(2);
     const taeFinalText = (details.taeFinal * 100).toFixed(2);
 
-    this.elMeta.textContent = `TAE ${taeFinalText}% · ${this.meses} meses`;
+    this.elTerm.textContent = `${this.meses} meses`;
+    this.elMeta.textContent = `TAE ${taeFinalText}%`;
 
     if (details.appliedRules.length > 0 && details.totalDiscount > 0) {
       const labels = details.appliedRules
@@ -676,6 +697,14 @@ class RentingSimulador {
       100;
 
     this.elSliderWrap.style.setProperty('--sim-slider-scale', String(pct / 100));
+
+    const canContinue = this.hasInteracted && this.importe > 0;
+    this.elCTA.disabled = !canContinue;
+    this.elCTA.setAttribute('aria-disabled', canContinue ? 'false' : 'true');
+
+    this.elResult.classList.remove('is-updating');
+    void this.elResult.offsetWidth;
+    this.elResult.classList.add('is-updating');
   }
 
   abrirFormulario() {

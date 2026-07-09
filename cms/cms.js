@@ -464,9 +464,10 @@
 
   async function loadPageAssets() {
     try {
+      const cacheBust = `t=${Date.now()}`;
       const [css, js] = await Promise.all([
-        fetch('../css/simulador.css').then((response) => response.text()),
-        fetch('../js/simulador.js').then((response) => response.text()),
+        fetch(`../css/simulador.css?${cacheBust}`, { cache: 'no-store' }).then((response) => response.text()),
+        fetch(`../js/simulador.js?${cacheBust}`, { cache: 'no-store' }).then((response) => response.text()),
       ]);
       return { css, js };
     } catch (err) {
